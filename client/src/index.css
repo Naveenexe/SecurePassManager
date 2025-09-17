@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --radius: 8px;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Light mode colors - extracted from design reference */
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(222, 84%, 4%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(222, 84%, 4%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(222, 84%, 4%);
+  --primary: hsl(217, 91%, 60%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(210, 40%, 96%);
+  --secondary-foreground: hsl(222, 47%, 11%);
+  --muted: hsl(210, 40%, 96%);
+  --muted-foreground: hsl(215, 16%, 47%);
+  --accent: hsl(142, 76%, 36%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  --destructive: hsl(0, 72%, 51%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(214, 32%, 91%);
+  --input: hsl(214, 32%, 91%);
+  --ring: hsl(217, 91%, 60%);
+  --chart-1: hsl(217, 91%, 60%);
+  --chart-2: hsl(142, 76%, 36%);
+  --chart-3: hsl(42, 93%, 56%);
+  --chart-4: hsl(147, 79%, 42%);
+  --chart-5: hsl(341, 75%, 51%);
+  --sidebar: hsl(0, 0%, 100%);
+  --sidebar-foreground: hsl(222, 84%, 4%);
+  --sidebar-primary: hsl(217, 91%, 60%);
+  --sidebar-primary-foreground: hsl(0, 0%, 100%);
+  --sidebar-accent: hsl(210, 40%, 96%);
+  --sidebar-accent-foreground: hsl(217, 91%, 60%);
+  --sidebar-border: hsl(214, 32%, 91%);
+  --sidebar-ring: hsl(217, 91%, 60%);
+}
+
+.dark {
+  --background: hsl(222, 84%, 4%);
+  --foreground: hsl(210, 40%, 98%);
+  --card: hsl(222, 84%, 4%);
+  --card-foreground: hsl(210, 40%, 98%);
+  --popover: hsl(222, 84%, 4%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  --primary: hsl(217, 91%, 60%);
+  --primary-foreground: hsl(222, 84%, 4%);
+  --secondary: hsl(217, 32%, 17%);
+  --secondary-foreground: hsl(210, 40%, 98%);
+  --muted: hsl(217, 32%, 17%);
+  --muted-foreground: hsl(215, 20%, 65%);
+  --accent: hsl(142, 76%, 36%);
+  --accent-foreground: hsl(210, 40%, 98%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(0, 85%, 96%);
+  --border: hsl(217, 32%, 17%);
+  --input: hsl(217, 32%, 17%);
+  --ring: hsl(217, 91%, 60%);
+  --chart-1: hsl(217, 91%, 60%);
+  --chart-2: hsl(142, 76%, 36%);
+  --chart-3: hsl(42, 93%, 56%);
+  --chart-4: hsl(147, 79%, 42%);
+  --chart-5: hsl(341, 75%, 51%);
+  --sidebar: hsl(222, 84%, 4%);
+  --sidebar-foreground: hsl(210, 40%, 98%);
+  --sidebar-primary: hsl(217, 91%, 60%);
+  --sidebar-primary-foreground: hsl(222, 84%, 4%);
+  --sidebar-accent: hsl(217, 32%, 17%);
+  --sidebar-accent-foreground: hsl(217, 91%, 60%);
+  --sidebar-border: hsl(217, 32%, 17%);
+  --sidebar-ring: hsl(217, 91%, 60%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+
+  /* Custom animations */
+  .transition-all {
+    transition: all 200ms ease-in-out;
+  }
+
+  /* Password strength colors */
+  .password-strength-weak {
+    @apply bg-destructive;
+  }
+
+  .password-strength-medium {
+    @apply bg-yellow-500;
+  }
+
+  .password-strength-strong {
+    @apply bg-accent;
+  }
+
+  /* Sidebar animations */
+  .sidebar-animate {
+    transform: translateX(-100%);
+    transition: transform 300ms ease-in-out;
+  }
+
+  .sidebar-animate.open {
+    transform: translateX(0);
+  }
+
+  @media (min-width: 768px) {
+    .sidebar-animate {
+      transform: translateX(0);
+    }
+  }
+
+  /* Ensure Font Awesome icons work */
+  .fa, .fab, .fas {
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands";
+  }
+}
