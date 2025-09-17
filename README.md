@@ -1,4 +1,4 @@
-git clone https://github.com/yourusername/SecurePassManager.git
+git clone https://github.com/Naveenexe/SecurePassManager.git
 
 # 🔐 SecurePass Manager
 
@@ -250,7 +250,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Documentation**: Check the `/docs` folder for detailed guides
 - **Issues**: Create GitHub issues for bugs and feature requests
 - **Discussions**: Use GitHub discussions for questions
-- **Email**: [your-email@example.com]
+- **Email**: watarenaveen@gmail.com
 
 ## 🔮 Future Roadmap
 
