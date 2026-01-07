@@ -20,17 +20,17 @@ function decryptPassword(encryptedPassword: string): string {
 
 function calculatePasswordStrength(password: string): number {
   let score = 0;
-  
+
   // Length
   if (password.length >= 8) score++;
   if (password.length >= 12) score++;
-  
+
   // Character types
   if (/[a-z]/.test(password)) score++;
   if (/[A-Z]/.test(password)) score++;
   if (/[0-9]/.test(password)) score++;
   if (/[^A-Za-z0-9]/.test(password)) score++;
-  
+
   return Math.min(4, score);
 }
 
@@ -84,7 +84,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const { firstName, lastName, email } = req.body;
-      
+
       const updatedUser = await storage.upsertUser({
         id: userId,
         firstName,
@@ -92,7 +92,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email,
         profileImageUrl: "",
       });
-      
+
       res.json(updatedUser);
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -106,14 +106,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const search = req.query.search as string;
       const passwords = await storage.getPasswords(userId, search);
-      
+
       // Decrypt passwords for client
       const decryptedPasswords = passwords.map(p => ({
         ...p,
         password: decryptPassword(p.encryptedPassword),
         encryptedPassword: undefined, // Don't send encrypted version to client
       }));
-      
+
       res.json(decryptedPasswords);
     } catch (error) {
       console.error("Error fetching passwords:", error);
@@ -136,10 +136,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const validatedData = apiInsertPasswordSchema.parse(req.body);
-      
+
       const encryptedPassword = encryptPassword(validatedData.password);
       const strength = calculatePasswordStrength(validatedData.password);
-      
+
       const passwordData = {
         website: validatedData.website,
         username: validatedData.username,
@@ -150,7 +150,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         isFavorite: validatedData.isFavorite || false,
         strength,
       };
-      
+
       const password = await storage.createPassword(passwordData);
       res.json({
         ...password,
@@ -168,26 +168,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const passwordId = req.params.id;
       const validatedData = apiUpdatePasswordSchema.parse(req.body);
-      
-      const updateData: any = {
-        website: validatedData.website,
-        username: validatedData.username,
-        notes: validatedData.notes,
-        categoryId: validatedData.categoryId === 'none' ? null : validatedData.categoryId,
-        isFavorite: validatedData.isFavorite,
-      };
-      
+
+      const updateData: any = {};
+      if (validatedData.website !== undefined) updateData.website = validatedData.website;
+      if (validatedData.username !== undefined) updateData.username = validatedData.username;
+      if (validatedData.notes !== undefined) updateData.notes = validatedData.notes;
+      if (validatedData.categoryId !== undefined) {
+        updateData.categoryId = validatedData.categoryId === 'none' ? null : validatedData.categoryId;
+      }
+      if (validatedData.isFavorite !== undefined) updateData.isFavorite = validatedData.isFavorite;
+
       if (validatedData.password) {
         updateData.encryptedPassword = encryptPassword(validatedData.password);
         updateData.strength = calculatePasswordStrength(validatedData.password);
       }
-      
+
       const password = await storage.updatePassword(passwordId, userId, updateData);
-      
+
       if (!password) {
         return res.status(404).json({ message: "Password not found" });
       }
-      
+
       res.json({
         ...password,
         password: validatedData.password ? validatedData.password : decryptPassword(password.encryptedPassword),
@@ -203,13 +204,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const passwordId = req.params.id;
-      
+
       const success = await storage.deletePassword(passwordId, userId);
-      
+
       if (!success) {
         return res.status(404).json({ message: "Password not found" });
       }
-      
+
       res.json({ message: "Password deleted successfully" });
     } catch (error) {
       console.error("Error deleting password:", error);
@@ -236,7 +237,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ...req.body,
         userId,
       });
-      
+
       const category = await storage.createCategory(validatedData);
       res.json(category);
     } catch (error) {
@@ -250,13 +251,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const categoryId = req.params.id;
       const updates = req.body;
-      
+
       const category = await storage.updateCategory(categoryId, userId, updates);
-      
+
       if (!category) {
         return res.status(404).json({ message: "Category not found" });
       }
-      
+
       res.json(category);
     } catch (error) {
       console.error("Error updating category:", error);
@@ -268,13 +269,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const categoryId = req.params.id;
-      
+
       const success = await storage.deleteCategory(categoryId, userId);
-      
+
       if (!success) {
         return res.status(404).json({ message: "Category not found" });
       }
-      
+
       res.json({ message: "Category deleted successfully" });
     } catch (error) {
       console.error("Error deleting category:", error);
@@ -288,7 +289,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const passwords = await storage.getPasswords(userId);
       const categories = await storage.getCategories(userId);
-      
+
       const decryptedPasswords = passwords.map(p => ({
         website: p.website,
         username: p.username,
@@ -297,13 +298,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         category: p.categoryId,
         createdAt: p.createdAt,
       }));
-      
+
       const exportData = {
         passwords: decryptedPasswords,
         categories,
         exportedAt: new Date().toISOString(),
       };
-      
+
       res.setHeader('Content-Type', 'application/json');
       res.setHeader('Content-Disposition', 'attachment; filename="securepass-export.json"');
       res.json(exportData);

@@ -53,6 +53,7 @@ function Router() {
           <Route path="/settings" component={Settings} />
         </>
       )}
+      <Route path="/landing" component={Landing} />
       <Route component={NotFound} />
     </Switch>
   );

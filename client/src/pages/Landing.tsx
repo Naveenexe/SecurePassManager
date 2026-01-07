@@ -61,7 +61,7 @@ export default function Landing() {
               <Button 
                 size="lg" 
                 className="text-lg px-8 py-3"
-                onClick={() => window.location.href = "/api/login"}
+                onClick={() => window.location.href = "/"}
                 data-testid="login-btn"
               >
                 Get Started Free
@@ -118,7 +118,7 @@ export default function Landing() {
           <Button 
             size="lg" 
             className="text-lg px-8 py-3"
-            onClick={() => window.location.href = "/api/login"}
+            onClick={() => window.location.href = "/"}
             data-testid="cta-login-btn"
           >
             Start Using SecurePass
