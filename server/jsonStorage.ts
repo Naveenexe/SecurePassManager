@@ -37,7 +37,9 @@ async function readDb(): Promise<DatabaseShape> {
 }
 
 async function writeDb(db: DatabaseShape): Promise<void> {
-  await fs.promises.writeFile(DATA_FILE, JSON.stringify(db, null, 2), "utf-8");
+  const tempFile = `${DATA_FILE}.tmp`;
+  await fs.promises.writeFile(tempFile, JSON.stringify(db, null, 2), "utf-8");
+  await fs.promises.rename(tempFile, DATA_FILE);
 }
 
 function generateId(): string {
