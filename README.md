@@ -22,7 +22,7 @@ A secure, modern password management application for storing, managing, and gene
 **Prerequisites:** Node.js 18+, npm 8+, modern browser
 
 ```bash
-git clone https://github.com/yourusername/SecurePassManager.git
+git clone https://github.com/Naveenexe/SecurePassManager.git
 cd SecurePassManager
 npm install
 npm run dev:local
